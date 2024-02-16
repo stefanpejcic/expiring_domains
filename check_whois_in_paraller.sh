@@ -23,17 +23,18 @@ function check_number() {
 }
 
 # Check if number and file are provided as command line arguments
-if [ "$#" -ne 2 ]; then
-    echo "Usage: $0 <number (2-32)> <file>"
+if [ "$#" -ne 3 ]; then
+    echo "Usage: $0 <number (2-32)> <number> <tld>"
     exit 1
 fi
 
 number="$1"
-file="$2"
+file="$2.txt"
+extension="$3"
 
 # Validate the number
 if ! check_number "$number"; then
-    echo "Error: Number must be between 2 and 32."
+    echo "Error: Domain name length must be between 2 and 32."
     exit 1
 fi
 
@@ -44,4 +45,4 @@ if [ ! -f "$file" ]; then
 fi
 
 # Use parallel to run python3 check_whois.py for each word in the file
-cat "$file" | parallel -j0 python3 check_whois.py {}
+cat "$file" | parallel -j0 python3 check_whois.py {}.$extension
