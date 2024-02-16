@@ -23,14 +23,13 @@ function check_number() {
 }
 
 # Check if number and file are provided as command line arguments
-if [ "$#" -ne 3 ]; then
-    echo "Usage: $0 <number (2-32)> <number> <tld>"
+if [ "$#" -ne 2 ]; then
+    echo "Usage: $0 <number (2-32)> <tld>"
     exit 1
 fi
 
 number="$1"
-file="$2.txt"
-extension="$3"
+extension="$2"
 
 # Validate the number
 if ! check_number "$number"; then
@@ -39,10 +38,10 @@ if ! check_number "$number"; then
 fi
 
 # Check if the file exists
-if [ ! -f "$file" ]; then
+if [ ! -f "$number.txt" ]; then
     echo "Error: File not found - $file"
     exit 1
 fi
 
 # Use parallel to run python3 check_whois.py for each word in the file
-cat "$file" | parallel -j0 python3 check_whois.py {}.$extension
+cat "$number.txt" | parallel -j0 python3 check_whois.py {}.$extension
